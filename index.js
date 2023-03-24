@@ -1,11 +1,19 @@
 const express= require('express');
 const createError= require('http-errors')
+const authRoute= require('./src/routes/authRoute')
 const productRoute= require('./src/routes/productRoute')
 const morgan= require('morgan')
 const path= require('path')
 const bodyParser= require('body-parser')
+require('dotenv').config()
+const connectDB= require('./src/config/dbConfig')
+const session= require('express-session')
+const MongoDBSession= require('connect-mongo')
+const isAuth= require('./src/midllewares/isAuth')
+
 
 const app = express();
+connectDB();
 
 /*  Setup our view engines */    
 
@@ -25,12 +33,24 @@ app.use(bodyParser.urlencoded({
     extended:true
 }))
 
+app.use(session({
+    secret:process.env.SESSION_SECRET,
+    resave:false,
+    saveUninitialized:false,
+    store: MongoDBSession.create({
+        mongoUrl:process.env.DB_URL
+    })
+}))
+
 /*  Route Definitions  */
 app.get('/',(req,res)=>{
     res.render('home',{title:"home page"})
 })
 
-app.use('/product',productRoute)
+// protecting the route using our middleware (so you cant check the products if you are not logged in)
+app.use('/product',isAuth,productRoute)
+
+app.use('/auth',authRoute)
 
 
 

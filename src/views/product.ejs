@@ -7,10 +7,12 @@
 <body>
   <div class="container">
     <h1>Product List</h1>
+    <a href="/auth/logout" class="btn btn-default">logout</a>
 
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>id</th>
           <th>Name</th>
           <th>Description</th>
           <th>Price</th>
@@ -21,6 +23,7 @@
       <tbody>
         <% products.forEach(function(product) { %>
           <tr>
+            <td><%= product.id %></td>
             <td><%= product.name %></td>
             <td><%= product.description %></td>
             <td><%= product.price %></td>

@@ -4,7 +4,7 @@ const {getProductPage,getEditPage,createHandler,editHandler,deletehandler}= requ
 /*  Assign to each sub route a main function (endpoint handler) */
 
 // get a list of products page
-route.get('/',getProductPage)
+route.get('/', getProductPage)
 
 // get the edit page for a signle product using the id as ref
 // id is a param that should be sent with the request
